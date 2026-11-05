@@ -2,3 +2,7 @@
 # FVM Version Cache
 .fvm/
 coverage/
+/build/
+.dart_tool/
+.fvm/
+coverage/
