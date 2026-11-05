@@ -1,6 +1,29 @@
-
-# FVM Version Cache
-.fvm/
-coverage/
-/build/
+# Dart / Flutter
 .dart_tool/
+.packages
+.pub-cache/
+.pub/
+build/
+.flutter-plugins
+.flutter-plugins-dependencies
+.flutter-plugins-dependencies.tmp
+
+# FVM
+.fvm/
+
+# IDE
+.idea/
+*.iml
+.vscode/
+
+# Testing
+coverage/
+test-results/
+
+# Logs
+*.log
+
+# Secrets and local environment
+.env
+.env.*
+!.env.example
