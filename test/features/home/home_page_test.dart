@@ -18,7 +18,7 @@ Widget _buildSubject({
       ...GlobalMaterialLocalizations.delegates,
     ],
     supportedLocales: AppLocalizations.supportedLocales,
-    home: HomePage(flavor: flavor),
+    home: HomePage(flavor: flavor, onLogout: () {}),
   );
 }
 
