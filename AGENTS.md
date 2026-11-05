@@ -155,6 +155,11 @@ class HabitRepositoryImpl implements HabitRepository {
   (guarded by a lock/queue so concurrent requests wait for the same refresh),
   then retries the original request. If refresh fails, clear tokens and route
   to login.
+- Implemented in `core/auth` (tokens, `TokenStorage`, `SessionEvents`) and
+  `core/network` (`AuthInterceptor`). Public endpoints (login) are marked with
+  `AuthInterceptor.skipAuthKey`. Contract and flow: `docs/networking.md`.
+- A refresh that fails because of the network or a `5xx` must NOT log the user
+  out; only a rejected refresh token ends the session.
 
 ## Local data
 
