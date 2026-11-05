@@ -26,6 +26,23 @@ The backend lives in a separate repository.
   Build-time values are read once through `AppConfig` (`core/config`); never
   call `String.fromEnvironment` elsewhere. Native setup is in `docs/flavors.md`.
 
+## Dart constructor syntax (new in recent Dart, easy to get wrong)
+
+Recent Dart (3.13 in this repo) uses the shorter constructor declarations, and
+the analyzer/formatter expects them. Models trained on older code still write
+the class name in every constructor. In this repo:
+
+- Generative constructor: `const new({required this.router, super.key});`
+  not `const App({required this.router, super.key});`
+- Named constructor: `new named(...)` form, not `ClassName.named(...)`.
+- Factory constructor: `factory fromEnvironment() { ... }`
+  not `factory AppConfig.fromEnvironment() { ... }`. The same applies to
+  `factory parse({...})`.
+- Call sites are unchanged: `AppConfig.fromEnvironment()`, `App(router: r)`.
+- Before writing a constructor, look at an existing class in `lib/` and copy
+  its style. If `fvm flutter analyze` or `fvm dart fix --apply` reports a
+  constructor-syntax issue, apply the fix instead of reverting it.
+
 ## Material imports (important, easy to get wrong)
 
 Since Flutter 3.47 Material and Cupertino are standalone packages. Many models

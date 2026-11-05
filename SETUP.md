@@ -1,80 +1,88 @@
-# Setup (one time, on your Mac)
+# Setup
 
-Run everything from the root of the project folder.
+How to build and run `habit_focus` from a fresh clone.
 
-## 1. Create the project folder and pin Flutter with FVM
+## Prerequisites
+
+| Tool | Needed for | Notes |
+|---|---|---|
+| [Git](https://git-scm.com) | cloning | |
+| [FVM](https://fvm.app) | pinning the Flutter version | The exact version is in `.fvmrc` |
+| Android Studio (SDK + emulator) | Android | Or a physical device with USB debugging |
+| Xcode and CocoaPods | iOS (macOS only) | Free Apple ID is enough for your own device |
+| A running backend | login and sync | Separate repository, see [Backend](#backend) |
+
+You do not need to install Flutter yourself: FVM downloads the pinned version.
+
+## 1. Get the code and the Flutter version
 
 ```bash
-mkdir habit_focus && cd habit_focus
-git init
-fvm install stable
-fvm use stable --pin      # writes .fvmrc with an exact version and creates .fvm/
+git clone <repository-url>
+cd habit_focus
+fvm install          # installs the version from .fvmrc
 fvm flutter --version
 ```
 
-`--pin` matters: CI reads the exact version from `.fvmrc`. If your FVM version
-does not know `--pin`, run `fvm releases`, pick the newest stable number and run
-`fvm use <number>`. Commit `.fvmrc`, ignore `.fvm/`.
+Always use `fvm flutter ...` and `fvm dart ...` in this project, never a global
+`flutter`. Optional: in VS Code set `"dart.flutterSdkPath": ".fvm/flutter_sdk"`
+in `.vscode/settings.json`.
 
-VS Code: set `"dart.flutterSdkPath": ".fvm/flutter_sdk"` in `.vscode/settings.json`.
-
-## 2. Generate the Flutter project
+## 2. Install dependencies
 
 ```bash
-fvm flutter create --org com.example --project-name habit_focus --platforms android,ios .
+fvm flutter pub get
 ```
 
-Replace `com.example` with your own reverse-domain. The project name must stay
-`habit_focus`, because all imports are `package:habit_focus/...`.
+This also generates the localization code (Polish and English) from
+`lib/l10n/arb/`.
 
-Append to the generated `.gitignore`:
+## 3. Configure the environment
 
+Build-time settings live in `config/<flavor>.json`:
+
+```json
+{
+  "FLAVOR": "dev",
+  "API_BASE_URL": "http://10.0.2.2:8000/api"
+}
 ```
-.fvm/
-coverage/
-```
 
-## 3. Unzip our files over the project
+- `FLAVOR` is one of `dev`, `staging`, `prod`.
+- `API_BASE_URL` is the backend address. Plain `http` is accepted only for
+  `dev`; `staging` and `prod` require `https`.
+- Pick the host that matches where the app runs:
 
-Unzip `habit_focus-step-1.zip` into the project root and let it **overwrite**
-existing files (`analysis_options.yaml`, `lib/main.dart`, `README.md`). Then delete
-the generated template test:
+| Where the app runs | Host for a backend on your computer |
+|---|---|
+| Android emulator | `10.0.2.2` |
+| iOS simulator | `localhost` |
+| Physical device | your computer's LAN IP (same Wi-Fi) |
+
+These values are compiled into the app and are visible to anyone who unpacks
+it. Never put secrets in them.
+
+## 4. Run
 
 ```bash
-rm test/widget_test.dart
+fvm flutter run --dart-define-from-file=config/dev.json
 ```
 
-## 4. Add packages (the tool picks the latest versions)
+Native flavors (separate app IDs per environment) are described in
+[`docs/flavors.md`](docs/flavors.md). Until they are configured natively, do not
+pass `--flavor`.
 
-```bash
-fvm flutter pub add material_ui flutter_bloc go_router dio flutter_secure_storage get_it equatable intl
-fvm flutter pub add flutter_localizations --sdk=flutter
-fvm flutter pub add drift drift_flutter
-fvm flutter pub add dev:very_good_analysis dev:bloc_test dev:mocktail dev:drift_dev dev:build_runner
-```
+### iOS on a physical device
 
-If `intl` conflicts with `flutter_localizations`, run `fvm flutter pub add intl:any`
-instead. Do not edit
-versions by hand.
+1. `open ios/Runner.xcworkspace`, select the `Runner` target, tab *Signing &
+   Capabilities*.
+2. Choose your Apple ID as the team and set a unique bundle identifier.
+3. Run from Xcode once, then `fvm flutter run` works.
 
-## 5. Enable localization generation
+With a free Apple ID the provisioning profile expires after 7 days; run the
+app again to renew it. Distribution through TestFlight or the App Store needs
+a paid Apple Developer account.
 
-In `pubspec.yaml`, under the `flutter:` section, add:
-
-```yaml
-flutter:
-  generate: true
-```
-
-(`uses-material-design: true` can stay next to it.) Then:
-
-```bash
-fvm flutter pub get       # also generates lib/l10n/generated/
-```
-
-Commit the generated files in `lib/l10n/generated/`.
-
-## 6. Format, analyze, test
+## 5. Check the code
 
 ```bash
 fvm dart format lib test
@@ -82,10 +90,33 @@ fvm flutter analyze
 fvm flutter test
 ```
 
-## 7. Run
+CI runs the same checks on every push and pull request.
+
+## 6. Build an APK
 
 ```bash
-fvm flutter run --dart-define-from-file=config/dev.json
+fvm flutter build apk --release \
+  --dart-define-from-file=config/prod.json \
+  --obfuscate --split-debug-info=build/symbols
 ```
 
-Without native flavors set up (see `docs/flavors.md`) do not pass `--flavor` yet.
+Release signing needs your own keystore. Keep the keystore and
+`key.properties` out of git.
+
+## Backend
+
+The app talks to a REST API implemented in a separate Symfony repository
+(JWT access token plus rotating refresh token). Start it locally or deploy it,
+then point `API_BASE_URL` at it.
+
+## Troubleshooting
+
+| Problem | Fix |
+|---|---|
+| `requires SDK version ^x.y.z` during `pub get` | Your Flutter is older than the project. Run `fvm install` and use `fvm flutter`, not the global `flutter`. |
+| `fvm: command not found` | Install FVM, see [fvm.app](https://fvm.app). |
+| `Unknown FLAVOR` or `API_BASE_URL is missing` at startup | Run with `--dart-define-from-file=config/<flavor>.json`. |
+| `AppLocalizations` not found | Run `fvm flutter pub get`; check that `generate: true` is set under `flutter:` in `pubspec.yaml`. |
+| Android emulator cannot reach the backend | Use `10.0.2.2` instead of `localhost`. |
+| iOS build fails with signing errors | Set a team and a unique bundle identifier in Xcode. |
+| Stale build state | `fvm flutter clean && fvm flutter pub get` |
