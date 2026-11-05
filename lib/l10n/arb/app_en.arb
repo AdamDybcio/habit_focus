@@ -1,0 +1,11 @@
+{
+  "@@locale": "en",
+  "appTitle": "Habit Focus",
+  "@appTitle": {
+    "description": "Name of the application."
+  },
+  "homeTagline": "Build habits. Stay focused.",
+  "@homeTagline": {
+    "description": "Short tagline shown on the home screen."
+  }
+}

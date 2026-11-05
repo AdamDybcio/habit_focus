@@ -1,0 +1,40 @@
+name: habit_focus
+description: "An app to help you build and maintain good habits."
+
+publish_to: 'none' 
+
+version: 1.0.0+1
+
+environment:
+  sdk: ^3.13.7
+
+dependencies:
+  cupertino_icons: ^1.0.8
+  dio: ^5.11.1
+  drift: ^2.35.3
+  drift_flutter: ^0.3.1
+  equatable: ^3.0.0
+  flutter:
+    sdk: flutter
+  flutter_bloc: ^9.1.1
+  flutter_localizations:
+    sdk: flutter
+  flutter_secure_storage: ^11.2.0
+  get_it: ^9.3.0
+  go_router: ^18.1.3
+  intl: ^0.20.3
+  material_ui: ^1.10.0
+
+dev_dependencies:
+  bloc_test: ^10.0.0
+  build_runner: ^2.16.1
+  drift_dev: ^2.35.2
+  flutter_lints: ^6.0.0
+  flutter_test:
+    sdk: flutter
+  mocktail: ^1.0.5
+  very_good_analysis: ^11.0.0
+
+flutter:
+  uses-material-design: true
+  generate: true
