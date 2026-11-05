@@ -4,5 +4,3 @@
 coverage/
 /build/
 .dart_tool/
-.fvm/
-coverage/
