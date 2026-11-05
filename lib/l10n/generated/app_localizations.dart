@@ -109,6 +109,90 @@ abstract class AppLocalizations {
   /// In en, this message translates to:
   /// **'Build habits. Stay focused.'**
   String get homeTagline;
+
+  /// Button that ends the session.
+  ///
+  /// In en, this message translates to:
+  /// **'Log out'**
+  String get homeLogout;
+
+  /// Heading of the login screen.
+  ///
+  /// In en, this message translates to:
+  /// **'Welcome back'**
+  String get loginTitle;
+
+  /// Text under the login heading.
+  ///
+  /// In en, this message translates to:
+  /// **'Log in to continue'**
+  String get loginSubtitle;
+
+  /// Label of the email field.
+  ///
+  /// In en, this message translates to:
+  /// **'Email'**
+  String get loginEmailLabel;
+
+  /// Label of the password field.
+  ///
+  /// In en, this message translates to:
+  /// **'Password'**
+  String get loginPasswordLabel;
+
+  /// Tooltip of the button that reveals the password.
+  ///
+  /// In en, this message translates to:
+  /// **'Show password'**
+  String get loginShowPassword;
+
+  /// Tooltip of the button that hides the password.
+  ///
+  /// In en, this message translates to:
+  /// **'Hide password'**
+  String get loginHidePassword;
+
+  /// Label of the login button.
+  ///
+  /// In en, this message translates to:
+  /// **'Log in'**
+  String get loginSubmit;
+
+  /// Shown when the email field is empty.
+  ///
+  /// In en, this message translates to:
+  /// **'Enter your email'**
+  String get validationEmailRequired;
+
+  /// Shown when the email has an invalid format.
+  ///
+  /// In en, this message translates to:
+  /// **'Enter a valid email address'**
+  String get validationEmailInvalid;
+
+  /// Shown when the password field is empty.
+  ///
+  /// In en, this message translates to:
+  /// **'Enter your password'**
+  String get validationPasswordRequired;
+
+  /// Shown when the server rejects the credentials.
+  ///
+  /// In en, this message translates to:
+  /// **'Incorrect email or password'**
+  String get loginErrorInvalidCredentials;
+
+  /// Shown when the login request fails because of the network.
+  ///
+  /// In en, this message translates to:
+  /// **'Cannot reach the server. Check your connection and try again.'**
+  String get loginErrorNetwork;
+
+  /// Shown for any other login error.
+  ///
+  /// In en, this message translates to:
+  /// **'Something went wrong. Please try again.'**
+  String get loginErrorUnknown;
 }
 
 class _AppLocalizationsDelegate

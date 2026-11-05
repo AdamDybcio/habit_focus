@@ -7,5 +7,61 @@
   "homeTagline": "Build habits. Stay focused.",
   "@homeTagline": {
     "description": "Short tagline shown on the home screen."
+  },
+  "homeLogout": "Log out",
+  "@homeLogout": {
+    "description": "Button that ends the session."
+  },
+  "loginTitle": "Welcome back",
+  "@loginTitle": {
+    "description": "Heading of the login screen."
+  },
+  "loginSubtitle": "Log in to continue",
+  "@loginSubtitle": {
+    "description": "Text under the login heading."
+  },
+  "loginEmailLabel": "Email",
+  "@loginEmailLabel": {
+    "description": "Label of the email field."
+  },
+  "loginPasswordLabel": "Password",
+  "@loginPasswordLabel": {
+    "description": "Label of the password field."
+  },
+  "loginShowPassword": "Show password",
+  "@loginShowPassword": {
+    "description": "Tooltip of the button that reveals the password."
+  },
+  "loginHidePassword": "Hide password",
+  "@loginHidePassword": {
+    "description": "Tooltip of the button that hides the password."
+  },
+  "loginSubmit": "Log in",
+  "@loginSubmit": {
+    "description": "Label of the login button."
+  },
+  "validationEmailRequired": "Enter your email",
+  "@validationEmailRequired": {
+    "description": "Shown when the email field is empty."
+  },
+  "validationEmailInvalid": "Enter a valid email address",
+  "@validationEmailInvalid": {
+    "description": "Shown when the email has an invalid format."
+  },
+  "validationPasswordRequired": "Enter your password",
+  "@validationPasswordRequired": {
+    "description": "Shown when the password field is empty."
+  },
+  "loginErrorInvalidCredentials": "Incorrect email or password",
+  "@loginErrorInvalidCredentials": {
+    "description": "Shown when the server rejects the credentials."
+  },
+  "loginErrorNetwork": "Cannot reach the server. Check your connection and try again.",
+  "@loginErrorNetwork": {
+    "description": "Shown when the login request fails because of the network."
+  },
+  "loginErrorUnknown": "Something went wrong. Please try again.",
+  "@loginErrorUnknown": {
+    "description": "Shown for any other login error."
   }
 }
