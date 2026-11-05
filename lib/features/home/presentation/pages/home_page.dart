@@ -37,10 +37,7 @@ class HomePage extends StatelessWidget {
               const SizedBox(height: AppSpacing.s),
               Text(l10n.homeTagline, style: context.text.bodyLarge),
               const SizedBox(height: AppSpacing.l),
-              OutlinedButton(
-                onPressed: onLogout,
-                child: Text(l10n.homeLogout),
-              ),
+              OutlinedButton(onPressed: onLogout, child: Text(l10n.homeLogout)),
             ],
           ),
         ),
