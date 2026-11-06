@@ -1,5 +1,19 @@
 {
   "@@locale": "pl",
   "appTitle": "Habit Focus",
-  "homeTagline": "Buduj nawyki. Utrzymaj skupienie."
+  "homeTagline": "Buduj nawyki. Utrzymaj skupienie.",
+  "homeLogout": "Wyloguj",
+  "loginTitle": "Witaj ponownie",
+  "loginSubtitle": "Zaloguj się, aby kontynuować",
+  "loginEmailLabel": "E-mail",
+  "loginPasswordLabel": "Hasło",
+  "loginShowPassword": "Pokaż hasło",
+  "loginHidePassword": "Ukryj hasło",
+  "loginSubmit": "Zaloguj się",
+  "validationEmailRequired": "Podaj adres e-mail",
+  "validationEmailInvalid": "Podaj poprawny adres e-mail",
+  "validationPasswordRequired": "Podaj hasło",
+  "loginErrorInvalidCredentials": "Nieprawidłowy e-mail lub hasło",
+  "loginErrorNetwork": "Brak połączenia z serwerem. Sprawdź internet i spróbuj ponownie.",
+  "loginErrorUnknown": "Coś poszło nie tak. Spróbuj ponownie."
 }

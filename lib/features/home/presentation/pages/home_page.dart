@@ -8,10 +8,15 @@ import 'package:material_ui/material_ui.dart';
 /// Landing screen shown until the real features are built.
 class HomePage extends StatelessWidget {
   /// Creates the home page for the given build [flavor].
-  const new({required this.flavor, super.key});
+  ///
+  /// [onLogout] runs when the user taps the log out button.
+  const new({required this.flavor, required this.onLogout, super.key});
 
   /// Environment the app runs in. Non-production builds show a badge.
   final Flavor flavor;
+
+  /// Called when the user asks to log out.
+  final VoidCallback onLogout;
 
   @override
   Widget build(BuildContext context) {
@@ -31,6 +36,8 @@ class HomePage extends StatelessWidget {
               Text(l10n.appTitle, style: context.text.displaySmall),
               const SizedBox(height: AppSpacing.s),
               Text(l10n.homeTagline, style: context.text.bodyLarge),
+              const SizedBox(height: AppSpacing.l),
+              OutlinedButton(onPressed: onLogout, child: Text(l10n.homeLogout)),
             ],
           ),
         ),
