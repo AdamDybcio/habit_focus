@@ -24,7 +24,9 @@ The backend lives in a separate repository.
   `--flavor <name> --dart-define-from-file=config/<name>.json`.
   `--dart-define` values are NOT secret: never put keys or secrets in them.
   Build-time values are read once through `AppConfig` (`core/config`); never
-  call `String.fromEnvironment` elsewhere. Native setup is in `docs/flavors.md`.
+  call `String.fromEnvironment` elsewhere. Native setup is in `docs/flavors.md`:
+  Android flavors live in `android/app/build.gradle.kts`, iOS flavors are created
+  by `tool/ios_flavors.rb`. A new flavor needs both, plus `config/<name>.json`.
 
 ## Dart constructor syntax (new in recent Dart, easy to get wrong)
 
