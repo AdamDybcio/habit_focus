@@ -1,6 +1,10 @@
 <manifest xmlns:android="http://schemas.android.com/apk/res/android">
+    <!-- The debug and profile manifests already declare it for tooling, release
+         builds need it to reach the backend. -->
+    <uses-permission android:name="android.permission.INTERNET"/>
+
     <application
-        android:label="habit_focus"
+        android:label="@string/app_name"
         android:name="${applicationName}"
         android:icon="@mipmap/ic_launcher">
         <activity

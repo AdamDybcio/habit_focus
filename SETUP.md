@@ -64,19 +64,23 @@ it. Never put secrets in them.
 ## 4. Run
 
 ```bash
-fvm flutter run --dart-define-from-file=config/dev.json
+fvm flutter run --flavor dev --dart-define-from-file=config/dev.json
 ```
 
-Native flavors (separate app IDs per environment) are described in
-[`docs/flavors.md`](docs/flavors.md). Until they are configured natively, do not
-pass `--flavor`.
+Always pass both `--flavor` and the matching `--dart-define-from-file`. The
+flavors give each environment its own app ID and name, so `dev`, `staging` and
+`prod` can be installed side by side. Details, including the one-time iOS
+setup, are in [`docs/flavors.md`](docs/flavors.md).
 
 ### iOS on a physical device
 
 1. `open ios/Runner.xcworkspace`, select the `Runner` target, tab *Signing &
    Capabilities*.
-2. Choose your Apple ID as the team and set a unique bundle identifier.
-3. Run from Xcode once, then `fvm flutter run` works.
+2. Choose your Apple ID as the team and set a unique bundle identifier for the
+   `Runner` target in each configuration (`dev`, `staging`, `prod` use a
+   suffix, see `docs/flavors.md`).
+3. Run from Xcode once, then `fvm flutter run --flavor dev
+   --dart-define-from-file=config/dev.json` works.
 
 With a free Apple ID the provisioning profile expires after 7 days; run the
 app again to renew it. Distribution through TestFlight or the App Store needs

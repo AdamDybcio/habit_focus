@@ -1,0 +1,6 @@
+<manifest xmlns:android="http://schemas.android.com/apk/res/android">
+    <!-- Only the dev flavor may talk plain HTTP (local backend, for example
+         http://10.0.2.2:8000 from the emulator). Staging and prod stay
+         HTTPS-only. -->
+    <application android:usesCleartextTraffic="true" />
+</manifest>

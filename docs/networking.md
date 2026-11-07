@@ -69,16 +69,14 @@ Release builds must use HTTPS (`AppConfig` rejects `http` for `staging` and
 `prod`). Only `dev` may use plain HTTP, and mobile platforms block it by
 default.
 
-**Android (debug builds only).** In `android/app/src/debug/AndroidManifest.xml`
-add the attribute to the existing `<application>` element (create the element
-if the file has none):
+**Android (dev flavor only).** `android/app/src/dev/AndroidManifest.xml`
+sets `usesCleartextTraffic="true"` and is merged only into the `dev` flavor, so
+`staging` and `prod` stay HTTPS-only. The Android emulator reaches the host
+machine at `10.0.2.2`.
 
-```xml
-<application android:usesCleartextTraffic="true" />
-```
-
-The debug manifest is merged only into debug builds, so release builds stay
-HTTPS-only. The Android emulator reaches the host machine at `10.0.2.2`.
+The main manifest declares the `INTERNET` permission. Debug and profile
+manifests have their own copy for tooling, but release builds only work with
+the one in the main manifest.
 
 **iOS.** App Transport Security blocks plain HTTP to servers on the network.
 The simplest way to avoid weakening the app is to run the dev backend behind

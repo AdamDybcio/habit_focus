@@ -15,7 +15,7 @@ android {
     }
 
     defaultConfig {
-        // TODO: Specify your own unique Application ID (https://developer.android.com/studio/build/application-id.html).
+        // Application ID of the prod flavor. The other flavors add a suffix.
         applicationId = "pl.dybcio.habit_focus"
         // You can update the following values to match your application needs.
         // For more information, see: https://flutter.dev/to/review-gradle-config.
@@ -27,6 +27,26 @@ android {
         // flag during build.
         versionCode = flutter.versionCode
         versionName = flutter.versionName
+    }
+
+    // One app per environment, installable side by side on a phone because each
+    // flavor has its own application ID. See docs/flavors.md.
+    flavorDimensions += "env"
+    productFlavors {
+        create("dev") {
+            dimension = "env"
+            applicationIdSuffix = ".dev"
+            resValue("string", "app_name", "Habit Focus DEV")
+        }
+        create("staging") {
+            dimension = "env"
+            applicationIdSuffix = ".staging"
+            resValue("string", "app_name", "Habit Focus STG")
+        }
+        create("prod") {
+            dimension = "env"
+            resValue("string", "app_name", "Habit Focus")
+        }
     }
 
     buildTypes {
