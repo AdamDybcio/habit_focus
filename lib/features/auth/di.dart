@@ -8,7 +8,9 @@ import 'package:habit_focus/features/auth/domain/repositories/auth_repository.da
 import 'package:habit_focus/features/auth/domain/usecases/check_session_use_case.dart';
 import 'package:habit_focus/features/auth/domain/usecases/login_use_case.dart';
 import 'package:habit_focus/features/auth/domain/usecases/logout_use_case.dart';
+import 'package:habit_focus/features/auth/domain/usecases/register_use_case.dart';
 import 'package:habit_focus/features/auth/presentation/bloc/login_cubit.dart';
+import 'package:habit_focus/features/auth/presentation/bloc/register_cubit.dart';
 import 'package:habit_focus/features/auth/presentation/bloc/session_cubit.dart';
 
 /// Registers the authentication feature in [getIt].
@@ -26,6 +28,9 @@ void registerAuthDependencies(GetIt getIt) {
       ),
     )
     ..registerFactory<LoginUseCase>(() => LoginUseCase(getIt<AuthRepository>()))
+    ..registerFactory<RegisterUseCase>(
+      () => RegisterUseCase(getIt<AuthRepository>()),
+    )
     ..registerFactory<LogoutUseCase>(
       () => LogoutUseCase(getIt<AuthRepository>()),
     )
@@ -40,5 +45,8 @@ void registerAuthDependencies(GetIt getIt) {
       ),
       dispose: (cubit) => cubit.close(),
     )
-    ..registerFactory<LoginCubit>(() => LoginCubit(getIt<LoginUseCase>()));
+    ..registerFactory<LoginCubit>(() => LoginCubit(getIt<LoginUseCase>()))
+    ..registerFactory<RegisterCubit>(
+      () => RegisterCubit(getIt<RegisterUseCase>()),
+    );
 }

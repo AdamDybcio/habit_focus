@@ -5,6 +5,7 @@ import 'package:habit_focus/l10n/generated/app_localizations.dart';
 String loginFailureMessage(AppLocalizations l10n, AppFailure failure) {
   return switch (failure) {
     UnauthorizedFailure() => l10n.loginErrorInvalidCredentials,
+    TooManyRequestsFailure() => l10n.errorTooManyRequests,
     NetworkFailure() => l10n.loginErrorNetwork,
     _ => l10n.loginErrorUnknown,
   };

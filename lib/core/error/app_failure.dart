@@ -24,6 +24,19 @@ final class UnauthorizedFailure extends AppFailure {
   const new(super.message);
 }
 
+/// The request conflicts with existing data, for example an email address
+/// that is already registered.
+final class ConflictFailure extends AppFailure {
+  /// Creates a [ConflictFailure].
+  const new(super.message);
+}
+
+/// The server asked the client to slow down (rate limiting).
+final class TooManyRequestsFailure extends AppFailure {
+  /// Creates a [TooManyRequestsFailure].
+  const new(super.message);
+}
+
 /// Reading from or writing to local storage failed.
 final class StorageFailure extends AppFailure {
   /// Creates a [StorageFailure].

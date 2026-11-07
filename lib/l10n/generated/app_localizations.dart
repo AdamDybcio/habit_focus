@@ -193,6 +193,66 @@ abstract class AppLocalizations {
   /// In en, this message translates to:
   /// **'Something went wrong. Please try again.'**
   String get loginErrorUnknown;
+
+  /// Link on the login screen that opens registration.
+  ///
+  /// In en, this message translates to:
+  /// **'Create an account'**
+  String get loginCreateAccount;
+
+  /// Heading of the registration screen.
+  ///
+  /// In en, this message translates to:
+  /// **'Create your account'**
+  String get registerTitle;
+
+  /// Text under the registration heading.
+  ///
+  /// In en, this message translates to:
+  /// **'Start building habits that last'**
+  String get registerSubtitle;
+
+  /// Label of the registration button.
+  ///
+  /// In en, this message translates to:
+  /// **'Create account'**
+  String get registerSubmit;
+
+  /// Link on the registration screen that opens login.
+  ///
+  /// In en, this message translates to:
+  /// **'I already have an account'**
+  String get registerHaveAccount;
+
+  /// Shown when the new password is shorter than 10 characters.
+  ///
+  /// In en, this message translates to:
+  /// **'Use at least 10 characters'**
+  String get validationPasswordTooShort;
+
+  /// Shown when the new password is longer than 128 characters.
+  ///
+  /// In en, this message translates to:
+  /// **'Use at most 128 characters'**
+  String get validationPasswordTooLong;
+
+  /// Shown when an account with this email already exists.
+  ///
+  /// In en, this message translates to:
+  /// **'This email is already registered'**
+  String get registerErrorEmailTaken;
+
+  /// Shown when the server rejects the registration data.
+  ///
+  /// In en, this message translates to:
+  /// **'Check your email and password and try again'**
+  String get registerErrorRejected;
+
+  /// Shown when the server rate-limits the user.
+  ///
+  /// In en, this message translates to:
+  /// **'Too many attempts. Wait a moment and try again.'**
+  String get errorTooManyRequests;
 }
 
 class _AppLocalizationsDelegate

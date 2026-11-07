@@ -7,13 +7,24 @@ class PasswordField extends StatefulWidget {
   /// Creates the field that edits [controller].
   ///
   /// [onSubmitted] runs when the user confirms on the keyboard.
-  const new({required this.controller, required this.onSubmitted, super.key});
+  ///
+  /// With [isNewPassword] the field checks the password rules of the backend
+  /// and tells the platform to offer a generated password.
+  const new({
+    required this.controller,
+    required this.onSubmitted,
+    this.isNewPassword = false,
+    super.key,
+  });
 
   /// Holds the typed password.
   final TextEditingController controller;
 
   /// Called when the user presses "done" on the keyboard.
   final VoidCallback onSubmitted;
+
+  /// Whether the user is choosing a new password (registration).
+  final bool isNewPassword;
 
   @override
   State<PasswordField> createState() => _PasswordFieldState();
@@ -29,11 +40,18 @@ class _PasswordFieldState extends State<PasswordField> {
       controller: widget.controller,
       obscureText: _obscured,
       textInputAction: TextInputAction.done,
-      autofillHints: const [AutofillHints.password],
+      autofillHints: [
+        if (widget.isNewPassword)
+          AutofillHints.newPassword
+        else
+          AutofillHints.password,
+      ],
       autocorrect: false,
       enableSuggestions: false,
       onFieldSubmitted: (_) => widget.onSubmitted(),
-      validator: (value) => AuthValidators.password(l10n, value),
+      validator: (value) => widget.isNewPassword
+          ? AuthValidators.newPassword(l10n, value)
+          : AuthValidators.password(l10n, value),
       decoration: InputDecoration(
         labelText: l10n.loginPasswordLabel,
         suffixIcon: IconButton(

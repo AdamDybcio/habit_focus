@@ -3,6 +3,7 @@ import 'package:flutter_test/flutter_test.dart';
 import 'package:habit_focus/core/error/app_failure.dart';
 import 'package:habit_focus/features/auth/presentation/validators/auth_validators.dart';
 import 'package:habit_focus/features/auth/presentation/validators/login_failure_message.dart';
+import 'package:habit_focus/features/auth/presentation/validators/register_failure_message.dart';
 import 'package:habit_focus/l10n/generated/app_localizations.dart';
 
 void main() {
@@ -53,7 +54,77 @@ void main() {
     });
   });
 
+  group('AuthValidators.newPassword', () {
+    test('requires a value', () {
+      expect(
+        AuthValidators.newPassword(en, null),
+        en.validationPasswordRequired,
+      );
+      expect(AuthValidators.newPassword(en, ''), en.validationPasswordRequired);
+    });
+
+    test('rejects passwords shorter than the backend minimum', () {
+      expect(
+        AuthValidators.newPassword(en, 'a' * 9),
+        en.validationPasswordTooShort,
+      );
+    });
+
+    test('rejects passwords longer than the backend maximum', () {
+      expect(
+        AuthValidators.newPassword(en, 'a' * 129),
+        en.validationPasswordTooLong,
+      );
+    });
+
+    test('accepts the limits themselves', () {
+      expect(AuthValidators.newPassword(en, 'a' * 10), isNull);
+      expect(AuthValidators.newPassword(en, 'a' * 128), isNull);
+    });
+  });
+
+  group('registerFailureMessage', () {
+    test('explains a taken email', () {
+      expect(
+        registerFailureMessage(en, const ConflictFailure('x')),
+        en.registerErrorEmailTaken,
+      );
+    });
+
+    test('explains rejected input', () {
+      expect(
+        registerFailureMessage(en, const ValidationFailure('x')),
+        en.registerErrorRejected,
+      );
+    });
+
+    test('explains rate limiting', () {
+      expect(
+        registerFailureMessage(en, const TooManyRequestsFailure('x')),
+        en.errorTooManyRequests,
+      );
+    });
+
+    test('explains network problems and falls back to a generic message', () {
+      expect(
+        registerFailureMessage(en, const NetworkFailure('x')),
+        en.loginErrorNetwork,
+      );
+      expect(
+        registerFailureMessage(en, const UnknownFailure('x')),
+        en.loginErrorUnknown,
+      );
+    });
+  });
+
   group('loginFailureMessage', () {
+    test('explains rate limiting', () {
+      expect(
+        loginFailureMessage(en, const TooManyRequestsFailure('x')),
+        en.errorTooManyRequests,
+      );
+    });
+
     test('explains wrong credentials', () {
       expect(
         loginFailureMessage(en, const UnauthorizedFailure('x')),

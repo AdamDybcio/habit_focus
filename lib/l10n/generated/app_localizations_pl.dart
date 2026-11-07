@@ -57,4 +57,37 @@ class AppLocalizationsPl extends AppLocalizations {
 
   @override
   String get loginErrorUnknown => 'Coś poszło nie tak. Spróbuj ponownie.';
+
+  @override
+  String get loginCreateAccount => 'Załóż konto';
+
+  @override
+  String get registerTitle => 'Załóż konto';
+
+  @override
+  String get registerSubtitle => 'Zacznij budować nawyki, które zostają';
+
+  @override
+  String get registerSubmit => 'Utwórz konto';
+
+  @override
+  String get registerHaveAccount => 'Mam już konto';
+
+  @override
+  String get validationPasswordTooShort => 'Użyj co najmniej 10 znaków';
+
+  @override
+  String get validationPasswordTooLong => 'Użyj co najwyżej 128 znaków';
+
+  @override
+  String get registerErrorEmailTaken =>
+      'Ten adres e-mail jest już zarejestrowany';
+
+  @override
+  String get registerErrorRejected =>
+      'Sprawdź e-mail i hasło i spróbuj ponownie';
+
+  @override
+  String get errorTooManyRequests =>
+      'Zbyt wiele prób. Odczekaj chwilę i spróbuj ponownie.';
 }

@@ -1,6 +1,19 @@
 import 'package:habit_focus/app/router/app_routes.dart';
 import 'package:habit_focus/features/auth/presentation/bloc/session_state.dart';
 
+/// Screens only a signed-out user needs, signed-in users are sent home.
+const Set<String> _signedOutLocations = {
+  AppRoutes.loginPath,
+  AppRoutes.registerPath,
+  AppRoutes.splashPath,
+};
+
+/// Screens a signed-out user may open.
+const Set<String> _publicLocations = {
+  AppRoutes.loginPath,
+  AppRoutes.registerPath,
+};
+
 /// Decides where the user must be, given the [session] and the current
 /// [location]. Returns `null` when the user may stay where they are.
 String? sessionRedirect(SessionState session, String location) {
@@ -8,10 +21,8 @@ String? sessionRedirect(SessionState session, String location) {
     SessionUnknown() =>
       location == AppRoutes.splashPath ? null : AppRoutes.splashPath,
     SessionAuthenticated() =>
-      (location == AppRoutes.loginPath || location == AppRoutes.splashPath)
-          ? AppRoutes.homePath
-          : null,
+      _signedOutLocations.contains(location) ? AppRoutes.homePath : null,
     SessionUnauthenticated() =>
-      location == AppRoutes.loginPath ? null : AppRoutes.loginPath,
+      _publicLocations.contains(location) ? null : AppRoutes.loginPath,
   };
 }

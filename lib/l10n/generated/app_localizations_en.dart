@@ -57,4 +57,36 @@ class AppLocalizationsEn extends AppLocalizations {
 
   @override
   String get loginErrorUnknown => 'Something went wrong. Please try again.';
+
+  @override
+  String get loginCreateAccount => 'Create an account';
+
+  @override
+  String get registerTitle => 'Create your account';
+
+  @override
+  String get registerSubtitle => 'Start building habits that last';
+
+  @override
+  String get registerSubmit => 'Create account';
+
+  @override
+  String get registerHaveAccount => 'I already have an account';
+
+  @override
+  String get validationPasswordTooShort => 'Use at least 10 characters';
+
+  @override
+  String get validationPasswordTooLong => 'Use at most 128 characters';
+
+  @override
+  String get registerErrorEmailTaken => 'This email is already registered';
+
+  @override
+  String get registerErrorRejected =>
+      'Check your email and password and try again';
+
+  @override
+  String get errorTooManyRequests =>
+      'Too many attempts. Wait a moment and try again.';
 }
