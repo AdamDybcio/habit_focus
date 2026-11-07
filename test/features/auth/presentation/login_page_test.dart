@@ -15,6 +15,7 @@ class _MockLoginCubit extends MockCubit<LoginState> implements LoginCubit;
 Widget _buildSubject(
   LoginCubit cubit, {
   VoidCallback? onLoggedIn,
+  VoidCallback? onCreateAccount,
   Locale locale = const Locale('en'),
   ThemeData? theme,
 }) {
@@ -28,7 +29,10 @@ Widget _buildSubject(
     supportedLocales: AppLocalizations.supportedLocales,
     home: BlocProvider<LoginCubit>.value(
       value: cubit,
-      child: LoginPage(onLoggedIn: onLoggedIn ?? () {}),
+      child: LoginPage(
+        onLoggedIn: onLoggedIn ?? () {},
+        onCreateAccount: onCreateAccount ?? () {},
+      ),
     ),
   );
 }
@@ -196,6 +200,34 @@ void main() {
         ),
         findsOneWidget,
       );
+    });
+
+    testWidgets('shows a message when the server rate-limits', (tester) async {
+      stubState(
+        const LoginState(
+          status: LoginStatus.failure,
+          failure: TooManyRequestsFailure('slow down'),
+        ),
+      );
+
+      await tester.pumpWidget(_buildSubject(cubit));
+
+      expect(
+        find.text('Too many attempts. Wait a moment and try again.'),
+        findsOneWidget,
+      );
+    });
+
+    testWidgets('link opens the registration screen', (tester) async {
+      var opened = 0;
+
+      await tester.pumpWidget(
+        _buildSubject(cubit, onCreateAccount: () => opened++),
+      );
+      await tester.ensureVisible(find.text('Create an account'));
+      await tester.tap(find.text('Create an account'));
+
+      expect(opened, 1);
     });
 
     testWidgets('calls onLoggedIn once after a successful login', (

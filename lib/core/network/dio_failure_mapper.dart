@@ -11,6 +11,12 @@ AppFailure mapDioException(DioException exception) {
     if (status == 401) {
       return const UnauthorizedFailure('Unauthorized');
     }
+    if (status == 409) {
+      return const ConflictFailure('Conflict');
+    }
+    if (status == 429) {
+      return const TooManyRequestsFailure('Too many requests');
+    }
     if (status == 400 || status == 422) {
       return ValidationFailure('Request rejected ($status)');
     }

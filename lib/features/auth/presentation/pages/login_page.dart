@@ -6,6 +6,7 @@ import 'package:habit_focus/core/theme/theme_context.dart';
 import 'package:habit_focus/features/auth/presentation/bloc/login_cubit.dart';
 import 'package:habit_focus/features/auth/presentation/bloc/login_state.dart';
 import 'package:habit_focus/features/auth/presentation/validators/login_failure_message.dart';
+import 'package:habit_focus/features/auth/presentation/widgets/auth_switch_link.dart';
 import 'package:habit_focus/features/auth/presentation/widgets/email_field.dart';
 import 'package:habit_focus/features/auth/presentation/widgets/login_error_message.dart';
 import 'package:habit_focus/features/auth/presentation/widgets/login_submit_button.dart';
@@ -15,12 +16,20 @@ import 'package:material_ui/material_ui.dart';
 
 /// Login screen. Needs a [LoginCubit] above it in the widget tree.
 class LoginPage extends StatefulWidget {
-  /// Creates the page. [onLoggedIn] runs once after a successful login.
-  const new({required this.onLoggedIn, super.key});
+  /// Creates the page. [onLoggedIn] runs once after a successful login,
+  /// [onCreateAccount] when the user wants to register instead.
+  const new({
+    required this.onLoggedIn,
+    required this.onCreateAccount,
+    super.key,
+  });
 
   /// Called after the login succeeded, to switch the app to the signed-in
   /// state.
   final VoidCallback onLoggedIn;
+
+  /// Called when the user taps the link to the registration screen.
+  final VoidCallback onCreateAccount;
 
   @override
   State<LoginPage> createState() => _LoginPageState();
@@ -108,6 +117,11 @@ class _LoginPageState extends State<LoginPage> {
                               ],
                             );
                           },
+                        ),
+                        const SizedBox(height: AppSpacing.s),
+                        AuthSwitchLink(
+                          label: l10n.loginCreateAccount,
+                          onPressed: widget.onCreateAccount,
                         ),
                       ],
                     ),

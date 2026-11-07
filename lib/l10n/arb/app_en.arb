@@ -63,5 +63,45 @@
   "loginErrorUnknown": "Something went wrong. Please try again.",
   "@loginErrorUnknown": {
     "description": "Shown for any other login error."
+  },
+  "loginCreateAccount": "Create an account",
+  "@loginCreateAccount": {
+    "description": "Link on the login screen that opens registration."
+  },
+  "registerTitle": "Create your account",
+  "@registerTitle": {
+    "description": "Heading of the registration screen."
+  },
+  "registerSubtitle": "Start building habits that last",
+  "@registerSubtitle": {
+    "description": "Text under the registration heading."
+  },
+  "registerSubmit": "Create account",
+  "@registerSubmit": {
+    "description": "Label of the registration button."
+  },
+  "registerHaveAccount": "I already have an account",
+  "@registerHaveAccount": {
+    "description": "Link on the registration screen that opens login."
+  },
+  "validationPasswordTooShort": "Use at least 10 characters",
+  "@validationPasswordTooShort": {
+    "description": "Shown when the new password is shorter than 10 characters."
+  },
+  "validationPasswordTooLong": "Use at most 128 characters",
+  "@validationPasswordTooLong": {
+    "description": "Shown when the new password is longer than 128 characters."
+  },
+  "registerErrorEmailTaken": "This email is already registered",
+  "@registerErrorEmailTaken": {
+    "description": "Shown when an account with this email already exists."
+  },
+  "registerErrorRejected": "Check your email and password and try again",
+  "@registerErrorRejected": {
+    "description": "Shown when the server rejects the registration data."
+  },
+  "errorTooManyRequests": "Too many attempts. Wait a moment and try again.",
+  "@errorTooManyRequests": {
+    "description": "Shown when the server rate-limits the user."
   }
 }

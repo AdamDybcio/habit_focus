@@ -1,4 +1,4 @@
 {
   "FLAVOR": "prod",
-  "API_BASE_URL": "https://api.example.com/api"
+  "API_BASE_URL": "https://habit-api.dybcio.dev"
 }

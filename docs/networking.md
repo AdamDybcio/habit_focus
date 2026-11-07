@@ -7,13 +7,28 @@ JSON.
 
 | Endpoint | Request | Success response | Errors |
 |---|---|---|---|
-| `POST /auth/login` | `{"email": "...", "password": "..."}` | `200` `{"accessToken": "...", "refreshToken": "..."}` | `401` wrong credentials, `400`/`422` invalid input |
+| `POST /auth/login` | `{"email": "...", "password": "..."}` | `200` `{"accessToken": "...", "refreshToken": "..."}` | `401` wrong credentials, `400`/`422` invalid input, `429` rate limited |
+| `POST /auth/register` | `{"email": "...", "password": "..."}` (password 10 to 128 characters) | `201` `{"accessToken": "...", "refreshToken": "..."}` | `409` email already registered, `422` invalid input, `429` rate limited |
 | `POST /auth/refresh` | `{"refreshToken": "..."}` | `200` new `{"accessToken": "...", "refreshToken": "..."}` | `401` (or `400`/`403`) refresh token invalid, expired or already used |
+| `POST /auth/logout` | `{"refreshToken": "..."}` | `204`, also for unknown tokens | `429` rate limited |
 | any other endpoint | header `Authorization: Bearer <accessToken>` | endpoint specific | `401` access token missing or expired |
 
 Refresh tokens are **rotated**: every refresh returns a new pair and
-invalidates the old refresh token. Registration and logout (revoking the
-refresh token on the server) are added together with the backend.
+invalidates the old refresh token. Using an old refresh token again ends the
+whole session on the server.
+
+The backend lives in
+[habit-focus-api](https://github.com/AdamDybcio/habit-focus-api); its
+`docs/api.md` is the reference for the contract. `API_BASE_URL` is the bare
+host (for example `https://habit-api.dybcio.dev`), paths are not prefixed with
+`/api`.
+
+## Logout
+
+Logout clears the tokens on the device first, so it works offline and never
+blocks the UI. It then asks the server to revoke the refresh token as a best
+effort request. If that request fails, the unused refresh token simply
+expires on the server.
 
 ## Token flow
 

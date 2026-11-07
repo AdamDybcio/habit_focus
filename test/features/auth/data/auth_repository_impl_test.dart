@@ -123,23 +123,125 @@ void main() {
     });
   });
 
-  group('logout', () {
-    test('clears the stored tokens', () async {
-      when(() => storage.clear()).thenAnswer((_) async {});
+  group('register', () {
+    void stubRegister(Future<AuthTokens> Function() answer) {
+      when(
+        () => remote.register(
+          email: any(named: 'email'),
+          password: any(named: 'password'),
+        ),
+      ).thenAnswer((_) => answer());
+    }
 
+    test('stores the tokens and succeeds', () async {
+      stubRegister(() async => _tokens);
+      when(() => storage.write(any())).thenAnswer((_) async {});
+
+      final result = await repository.register(email: 'a@b.pl', password: 'x');
+
+      expect(result.isSuccess, isTrue);
+      verify(() => storage.write(_tokens)).called(1);
+    });
+
+    test('taken email gives ConflictFailure, stores nothing', () async {
+      stubRegister(() async => throw _dioError(status: 409));
+
+      final result = await repository.register(email: 'a@b.pl', password: 'x');
+
+      expect(result, _failureOf<ConflictFailure>());
+      verifyNever(() => storage.write(any()));
+    });
+
+    test('rejected input gives ValidationFailure', () async {
+      stubRegister(() async => throw _dioError(status: 422));
+
+      final result = await repository.register(email: 'a@b.pl', password: 'x');
+
+      expect(result, _failureOf<ValidationFailure>());
+    });
+
+    test('rate limit gives TooManyRequestsFailure', () async {
+      stubRegister(() async => throw _dioError(status: 429));
+
+      final result = await repository.register(email: 'a@b.pl', password: 'x');
+
+      expect(result, _failureOf<TooManyRequestsFailure>());
+    });
+
+    test('storage error gives StorageFailure', () async {
+      stubRegister(() async => _tokens);
+      when(() => storage.write(any()))
+          .thenThrow(const LocalStorageException('keystore'));
+
+      final result = await repository.register(email: 'a@b.pl', password: 'x');
+
+      expect(result, _failureOf<StorageFailure>());
+    });
+  });
+
+  group('logout', () {
+    setUp(() {
+      when(() => storage.read()).thenAnswer((_) async => _tokens);
+      when(() => storage.clear()).thenAnswer((_) async {});
+      when(() => remote.logout(any())).thenAnswer((_) async {});
+    });
+
+    test('clears the stored tokens', () async {
       final result = await repository.logout();
 
       expect(result.isSuccess, isTrue);
       verify(() => storage.clear()).called(1);
     });
 
-    test('reports a storage failure', () async {
+    test('revokes the refresh token on the server', () async {
+      await repository.logout();
+      await pumpEventQueue();
+
+      verify(() => remote.logout('r')).called(1);
+    });
+
+    test('still succeeds when the server cannot be reached', () async {
+      when(() => remote.logout(any())).thenAnswer(
+        (_) async => throw _dioError(type: DioExceptionType.connectionError),
+      );
+
+      final result = await repository.logout();
+      await pumpEventQueue();
+
+      expect(result.isSuccess, isTrue);
+      verify(() => storage.clear()).called(1);
+    });
+
+    test('does not call the server when there is no session', () async {
+      when(() => storage.read()).thenAnswer((_) async => null);
+
+      final result = await repository.logout();
+      await pumpEventQueue();
+
+      expect(result.isSuccess, isTrue);
+      verifyNever(() => remote.logout(any()));
+    });
+
+    test('clears the tokens even when they cannot be read', () async {
+      when(() => storage.read())
+          .thenThrow(const LocalStorageException('keystore'));
+
+      final result = await repository.logout();
+      await pumpEventQueue();
+
+      expect(result.isSuccess, isTrue);
+      verify(() => storage.clear()).called(1);
+      verifyNever(() => remote.logout(any()));
+    });
+
+    test('reports a storage failure when clearing fails', () async {
       when(() => storage.clear())
           .thenThrow(const LocalStorageException('keystore'));
 
       final result = await repository.logout();
 
       expect(result, _failureOf<StorageFailure>());
+      verifyNever(() => remote.logout(any()));
     });
   });
 }

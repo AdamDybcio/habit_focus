@@ -15,5 +15,15 @@
   "validationPasswordRequired": "Podaj hasło",
   "loginErrorInvalidCredentials": "Nieprawidłowy e-mail lub hasło",
   "loginErrorNetwork": "Brak połączenia z serwerem. Sprawdź internet i spróbuj ponownie.",
-  "loginErrorUnknown": "Coś poszło nie tak. Spróbuj ponownie."
+  "loginErrorUnknown": "Coś poszło nie tak. Spróbuj ponownie.",
+  "loginCreateAccount": "Załóż konto",
+  "registerTitle": "Załóż konto",
+  "registerSubtitle": "Zacznij budować nawyki, które zostają",
+  "registerSubmit": "Utwórz konto",
+  "registerHaveAccount": "Mam już konto",
+  "validationPasswordTooShort": "Użyj co najmniej 10 znaków",
+  "validationPasswordTooLong": "Użyj co najwyżej 128 znaków",
+  "registerErrorEmailTaken": "Ten adres e-mail jest już zarejestrowany",
+  "registerErrorRejected": "Sprawdź e-mail i hasło i spróbuj ponownie",
+  "errorTooManyRequests": "Zbyt wiele prób. Odczekaj chwilę i spróbuj ponownie."
 }

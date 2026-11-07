@@ -66,4 +66,60 @@ void main() {
       );
     });
   });
+  group('register', () {
+    test('posts the credentials to /auth/register', () async {
+      final tokens = await dataSource.register(
+        email: 'a@b.pl',
+        password: 'long enough password',
+      );
+
+      final request = adapter.requests.single;
+      expect(request.method, 'POST');
+      expect(request.path, '/auth/register');
+      expect(request.data, {
+        'email': 'a@b.pl',
+        'password': 'long enough password',
+      });
+      expect(request.extra[AuthInterceptor.skipAuthKey], isTrue);
+      expect(
+        tokens,
+        const AuthTokens(accessToken: 'access', refreshToken: 'refresh'),
+      );
+    });
+
+    test('throws DioException when the email is taken', () async {
+      adapter.handler = (_) async => jsonResponse({}, status: 409);
+
+      await expectLater(
+        dataSource.register(email: 'a@b.pl', password: 'long enough password'),
+        throwsA(isA<DioException>()),
+      );
+    });
+  });
+
+  group('logout', () {
+    test('posts the refresh token to /auth/logout', () async {
+      adapter.handler = (_) async => ResponseBody.fromString('', 204);
+
+      await dataSource.logout('refresh-token');
+
+      final request = adapter.requests.single;
+      expect(request.method, 'POST');
+      expect(request.path, '/auth/logout');
+      expect(request.data, {'refreshToken': 'refresh-token'});
+      expect(request.extra[AuthInterceptor.skipAuthKey], isTrue);
+    });
+
+    test('throws DioException when the server is unreachable', () async {
+      adapter.handler = (options) async => throw DioException.connectionError(
+        requestOptions: options,
+        reason: 'offline',
+      );
+
+      await expectLater(
+        dataSource.logout('refresh-token'),
+        throwsA(isA<DioException>()),
+      );
+    });
+  });
 }

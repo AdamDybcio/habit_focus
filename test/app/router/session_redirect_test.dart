@@ -21,10 +21,20 @@ void main() {
       expect(sessionRedirect(state, AppRoutes.loginPath), isNull);
     });
 
-    test('signed-in user leaves login and splash for home', () {
+    test('signed-out user may open the registration screen', () {
+      const state = SessionUnauthenticated();
+
+      expect(sessionRedirect(state, AppRoutes.registerPath), isNull);
+    });
+
+    test('signed-in user leaves login, registration and splash for home', () {
       const state = SessionAuthenticated();
 
       expect(sessionRedirect(state, AppRoutes.loginPath), AppRoutes.homePath);
+      expect(
+        sessionRedirect(state, AppRoutes.registerPath),
+        AppRoutes.homePath,
+      );
       expect(sessionRedirect(state, AppRoutes.splashPath), AppRoutes.homePath);
       expect(sessionRedirect(state, AppRoutes.homePath), isNull);
     });

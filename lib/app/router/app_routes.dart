@@ -12,6 +12,12 @@ abstract final class AppRoutes {
   /// Name of the login route.
   static const String loginName = 'login';
 
+  /// Path of the registration screen.
+  static const String registerPath = '/register';
+
+  /// Name of the registration route.
+  static const String registerName = 'register';
+
   /// Path of the splash screen shown while the session is checked.
   static const String splashPath = '/splash';
 

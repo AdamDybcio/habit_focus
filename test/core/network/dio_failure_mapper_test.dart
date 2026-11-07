@@ -34,6 +34,17 @@ void main() {
       );
     });
 
+    test('maps 409 to ConflictFailure', () {
+      expect(mapDioException(_exception(status: 409)), isA<ConflictFailure>());
+    });
+
+    test('maps 429 to TooManyRequestsFailure', () {
+      expect(
+        mapDioException(_exception(status: 429)),
+        isA<TooManyRequestsFailure>(),
+      );
+    });
+
     test('maps other statuses to NetworkFailure', () {
       expect(mapDioException(_exception(status: 500)), isA<NetworkFailure>());
       expect(mapDioException(_exception(status: 404)), isA<NetworkFailure>());

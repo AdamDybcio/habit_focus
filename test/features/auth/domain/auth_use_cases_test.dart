@@ -5,6 +5,7 @@ import 'package:habit_focus/features/auth/domain/repositories/auth_repository.da
 import 'package:habit_focus/features/auth/domain/usecases/check_session_use_case.dart';
 import 'package:habit_focus/features/auth/domain/usecases/login_use_case.dart';
 import 'package:habit_focus/features/auth/domain/usecases/logout_use_case.dart';
+import 'package:habit_focus/features/auth/domain/usecases/register_use_case.dart';
 import 'package:mocktail/mocktail.dart';
 
 class _MockRepository extends Mock implements AuthRepository;
@@ -48,6 +49,46 @@ void main() {
       );
 
       final result = await LoginUseCase(repository)(
+        email: 'a@b.pl',
+        password: 'x',
+      );
+
+      expect(result.isFailure, isTrue);
+    });
+  });
+
+  group('RegisterUseCase', () {
+    test('trims the email and keeps the password as typed', () async {
+      when(
+        () => repository.register(
+          email: any(named: 'email'),
+          password: any(named: 'password'),
+        ),
+      ).thenAnswer((_) async => const Success<void>(null));
+
+      final result = await RegisterUseCase(repository)(
+        email: '  user@example.com ',
+        password: ' long pass word ',
+      );
+
+      expect(result.isSuccess, isTrue);
+      verify(
+        () => repository.register(
+          email: 'user@example.com',
+          password: ' long pass word ',
+        ),
+      ).called(1);
+    });
+
+    test('passes a failure through unchanged', () async {
+      when(
+        () => repository.register(
+          email: any(named: 'email'),
+          password: any(named: 'password'),
+        ),
+      ).thenAnswer((_) async => const Failure<void>(ConflictFailure('taken')));
+
+      final result = await RegisterUseCase(repository)(
         email: 'a@b.pl',
         password: 'x',
       );
